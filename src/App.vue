@@ -6,6 +6,7 @@
       </div>
     </div>
   </div>
+
   <div class="row">
     <div class="col-md-4">
       <div class="form-group">
@@ -16,17 +17,20 @@
       <hr />
       <ul class="list-group">
         <li
-          v-for="(car,index) in cars"
+          v-for="(car,index) of cars"
           :key="index"
           class="list-group-item list-group-item-action pointer"
+          @click="selectCar(index)"
+          :class="{'active' : selectedCarIndex === index }"
         >{{car.name}} - {{car.model}}</li>
       </ul>
     </div>
+
     <div class="col-md-8">
       <div class="row">
         <div class="col-md-5">
-          <h2>BMW</h2>
-          <img src="./assets/images/BMW.jpg" alt class="rounded detailed-car-image" />
+          <h2>{{car.name}}</h2>
+          <img :src="car.image" v-bind:alt="car.name" class="rounded detailed-car-image" />
         </div>
 
         <div class="col-md-7">
@@ -34,26 +38,29 @@
 
           <ul>
             <li>
-              model -
-              <strong>BMW</strong>
+              Model -
+              <strong>{{car.model}}</strong>
             </li>
             <li>
               Year -
-              <strong>2020</strong>
+              <strong>{{car.year}}</strong>
             </li>
             <li>
               Owner -
-              <strong>John</strong>
+              <strong>{{car.owner}}</strong>
             </li>
             <li>
               Price -
-              <strong>250.000$</strong>
+              <strong>{{car.price}}$</strong>
             </li>
           </ul>
 
-          <p>+ 7 983 123 45 54</p>
+          <p v-if="phoneVisibility">{{car.phone}}</p>
 
-          <button class="btn btn-outline-success mr-2">Show phone</button>
+          <button
+            class="btn btn-outline-success mr-3"
+            @click="phoneVisibility = !phoneVisibility"
+          >Show phone</button>
           <button class="btn btn-primary">Buy</button>
         </div>
       </div>
@@ -62,42 +69,61 @@
 </template>
 
 <script>
+const car = (name, model, price, owner, year, phone, image) => ({
+  name,
+  model,
+  price,
+  owner,
+  year,
+  phone,
+  image,
+});
+
 const cars = [
-  {
-    name: "BMW",
-    model: "M5 F90",
-    price: "250.000",
-    owner: "Nodir",
-    year: 2020,
-    phone: "+7 489 934 77 89",
-    image: "./assets/images/BMW.jpg",
-  },
-  {
-    name: "Mersedes",
-    model: "AMG GT63",
-    price: "220.000",
-    owner: "John",
-    year: 2019,
-    phone: "+7 593 324 67 12",
-    image: "./assets/images/Mersedes.jpg",
-  },
-  {
-    name: "Nissan",
-    model: "GTR",
-    price: "120.000",
-    owner: "Angella",
-    year: 2016,
-    phone: "+7 593 645 22 12",
-    image: "./assets/images/Nissan_GTR.jpg.jpg",
-  },
+  car(
+    "BMW",
+    "M5 F90",
+    "250.000",
+    "Nodir",
+    2020,
+    "+7 489 934 77 89",
+    "./images/BMW.jpg"
+  ),
+  car(
+    "Nissan",
+    "GTR",
+    "120.000",
+    "Angella",
+    2016,
+    "+7 593 645 22 12",
+    "./images/Nissan_GTR.jpg"
+  ),
+  car(
+    "Mercedes",
+    "AMG GT63",
+    "220.000",
+    "John",
+    2019,
+    "+7 593 324 67 12",
+    "./images/Mercedes.jpg"
+  ),
 ];
+
 export default {
   name: "App",
   data() {
     return {
       cars: cars,
-      car: null,
+      car: cars[0],
+      selectedCarIndex: 0,
+      phoneVisibility: false,
     };
+  },
+  methods: {
+    selectCar(index) {
+      this.car = cars[index];
+      this.selectedCarIndex = index;
+    },
   },
 };
 </script>
@@ -113,4 +139,5 @@ export default {
   cursor: pointer;
 }
 </style>
+
 
