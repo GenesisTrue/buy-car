@@ -4,11 +4,15 @@
 
 
 <script>
-import CarSelection from "./components/CarSelection.vue";
+import CarSelection from "./components/CarSelection"
 
 export default {
-  components: { CarSelection },
+  components: { CarSelection  },
   name: "App",
+  data() {
+    return {}
+  },
+
 };
 </script>
 
